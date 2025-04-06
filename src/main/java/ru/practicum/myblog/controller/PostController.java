@@ -25,12 +25,12 @@ public class PostController {
             Page<PostView> postPage = postService.findAll(page, search);
             model.addAttribute("search", search)
                     .addAttribute("page", postPage);
-            return "posts";
+            return "post-list";
         } catch (Exception e) {
             model.addAttribute("search", null)
                     .addAttribute("page", new Page<PostView>())
                     .addAttribute("error", e.getMessage());
-            return "posts";
+            return "post-list";
         }
     }
 
