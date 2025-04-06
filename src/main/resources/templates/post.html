@@ -9,7 +9,7 @@
             var newComment = document.createElement("textarea");
             newComment.innerHTML = comment.innerHTML;
             newComment.rows = 3;
-            newComment.name = "text";
+            newComment.name = "content";
             newComment.style = "width:100%;";
             comment.parentNode.replaceChild(newComment, comment);
 
@@ -30,7 +30,7 @@
 
             var newComment = document.createElement("textarea");
             newComment.rows = 3;
-            newComment.name = "text";
+            newComment.name = "content";
             newComment.style = "width:100%;";
             form.appendChild(newComment);
 
@@ -49,12 +49,12 @@
     <table style="width:50%;margin-left:auto;margin-right:auto;">
         <tr>
             <td>
-                <form method="GET" th:action="${'/posts/'+post.getId()+'/edit'}">
+                <form method="POST" th:action="${'/posts/add'}">
                     <button style="float:right;">РЕДАКТИРОВАТЬ ПОСТ</button>
                 </form>
             </td>
             <td>
-                <form method="POST" th:action="${'/posts/'+post.getId()+'/delete'}">
+                <form method="POST" th:action="${'/posts/delete/'+post.getId()}">
                     <button style="float:right;">УДАЛИТЬ ПОСТ</button>
                 </form>
             </td>
@@ -89,20 +89,20 @@
         </tr>
         <tr th:each="comment : ${post.getComments()}">
             <td style="border-left:thin solid grey;">
-                <form method="POST" th:action="${'/posts/'+post.getId()+'/comments/'+comment.getId()}">
-                    <span th:id="${'comment'+comment.getId()}" th:text="${comment.getText()}"></span>
+                <form method="POST" th:action="@{/posts/{postId}/comments/{commentId}(postId=${post.getId()},commentId=${comment.getId()})}">
+                    <span th:id="${'comment'+comment.getId()}" th:text="${comment.getContent()}"></span>
                     <button th:id="${comment.getId()}" onclick="editComment(this.id)" style="float:right;">&#9998;</button>
                 </form>
             </td>
             <td>
-                <form method="POST" th:action="${'/posts/'+post.getId()+'/comments/'+comment.getId()+'/delete'}">
+                <form method="POST" th:action="@{/posts/{postId}/comments/{commentId}/delete(postId=${post.getId()},commentId=${comment.getId()})}">
                     <button style="float:right;">&#10007;</button>
                 </form>
             </td>
         </tr>
         <tr>
             <td>
-                <form id="addCommentForm" th:action="${'/posts/'+post.getId()+'/comments'}" method="post">
+                <form id="addCommentForm" th:action="@{/posts/{postId}/comments(postId=${post.getId()})}" method="post">
                     <button id="addCommentButton" style="float:right;" onclick="addComment()">Добавить комментарий</button>
                 </form>
             </td>

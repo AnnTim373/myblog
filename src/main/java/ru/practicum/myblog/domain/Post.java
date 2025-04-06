@@ -44,4 +44,8 @@ public class Post {
             ))
     private List<Tag> tags;
 
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "post_id", referencedColumnName = "id")
+    private List<Comment> comments;
+
 }

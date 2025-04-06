@@ -11,19 +11,18 @@ import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
+@Transactional
 public class PostRepositoryImpl implements PostRepository {
 
     private final SessionFactory sessionFactory;
 
     @Override
-    @Transactional
     public Post save(Post post) {
         sessionFactory.getCurrentSession().persist(post);
         return post;
     }
 
     @Override
-    @Transactional
     public Optional<Post> findById(Long id) {
         return sessionFactory.getCurrentSession()
                 .createQuery("from Post where id = :id", Post.class)

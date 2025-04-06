@@ -11,12 +11,12 @@ import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
+@Transactional
 public class TagRepositoryImpl implements TagRepository {
 
     private final SessionFactory sessionFactory;
 
     @Override
-    @Transactional
     public void saveAll(List<Tag> tags) {
         tags.forEach(tag -> sessionFactory.getCurrentSession().merge(tag));
     }

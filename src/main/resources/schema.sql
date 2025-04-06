@@ -28,5 +28,16 @@ create table if not exists my_blog.post_tag
     primary key (post_id, tag_value)
 );
 
+create sequence if not exists my_blog.seq_comment;
+
+create table if not exists my_blog.comment
+(
+    id bigint default next value for my_blog.seq_comment primary key,
+    content varchar,
+    post_id bigint references my_blog.post(id)
+);
+
+create index if not exists idx_comment_post_id on my_blog.comment(post_id);
+
 
 
