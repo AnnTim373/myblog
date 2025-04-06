@@ -20,6 +20,7 @@
       <param-value>ru.practicum.myblog.config.WebConfiguration</param-value>
     </init-param>
     <load-on-startup>1</load-on-startup>
+    <multipart-config/>
   </servlet>
 
   <!-- DispatcherServlet обрабатывает все запросы -->
