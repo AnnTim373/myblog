@@ -2,6 +2,7 @@ package ru.practicum.myblog.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,16 +20,28 @@ public class CommentController {
     @PostMapping({"/comments", "/comments/{commentId}"})
     public String saveComment(@PathVariable(name = "postId") Long postId,
                               @PathVariable(name = "commentId", required = false) Long commentId,
-                              @ModelAttribute(name = "comment") CommentDTO commentDTO) {
-        commentService.save(postId, commentId, commentDTO);
-        return "redirect:/posts/" + postId;
+                              @ModelAttribute(name = "comment") CommentDTO commentDTO,
+                              Model model) {
+        try {
+            commentService.save(postId, commentId, commentDTO);
+            return "redirect:/posts/" + postId;
+        } catch (Exception e) {
+            model.addAttribute("error", e.getMessage());
+            return "post";
+        }
     }
 
     @PostMapping("/comments/{commentId}/delete")
     public String deleteComment(@PathVariable(name = "postId") Long postId,
-                                @PathVariable(name = "commentId") Long commentId) {
-        commentService.deleteById(commentId);
-        return "redirect:/posts/" + postId;
+                                @PathVariable(name = "commentId") Long commentId,
+                                Model model) {
+        try {
+            commentService.deleteById(commentId);
+            return "redirect:/posts/" + postId;
+        } catch (Exception e) {
+            model.addAttribute("error", e.getMessage());
+            return "post";
+        }
     }
 
 }
