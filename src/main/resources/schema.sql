@@ -9,3 +9,9 @@ create table if not exists my_blog.post
     content     varchar      not null,
     likes_count integer      not null
 );
+
+create table if not exists my_blog.image
+(
+    post_id bigint references my_blog.post(id) primary key,
+    data blob not null
+);

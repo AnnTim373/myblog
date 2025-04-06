@@ -28,4 +28,7 @@ public class Post {
     @Column(name = "likes_count")
     private Long likesCount;
 
+    @OneToOne(mappedBy = "post", cascade = CascadeType.ALL)
+    private Image image;
+
 }
