@@ -1,6 +1,7 @@
 package ru.practicum.myblog.repository.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,6 +29,15 @@ public class PostRepositoryImpl implements PostRepository {
                 .createQuery("from Post where id = :id", Post.class)
                 .setParameter("id", id)
                 .uniqueResultOptional();
+    }
+
+    @Override
+    public void editLikeCount(Long postId, int likeCountModifier) {
+        Session session = sessionFactory.getCurrentSession();
+        Post post = session.createQuery("from Post where id = :postId", Post.class)
+                .setParameter("postId", postId).uniqueResult();
+        post.setLikesCount(post.getLikesCount() + likeCountModifier);
+        session.merge(post);
     }
 
 }

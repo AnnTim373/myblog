@@ -10,13 +10,13 @@ import ru.practicum.myblog.dto.CommentDTO;
 import ru.practicum.myblog.service.CommentService;
 
 @Controller
-@RequestMapping("/posts")
+@RequestMapping("/posts/{postId}")
 @RequiredArgsConstructor
 public class CommentController {
 
     private final CommentService commentService;
 
-    @PostMapping({"/{postId}/comments", "/{postId}/comments/{commentId}"})
+    @PostMapping({"/comments", "/comments/{commentId}"})
     public String saveComment(@PathVariable(name = "postId") Long postId,
                               @PathVariable(name = "commentId", required = false) Long commentId,
                               @ModelAttribute(name = "comment") CommentDTO commentDTO) {
@@ -24,7 +24,7 @@ public class CommentController {
         return "redirect:/posts/" + postId;
     }
 
-    @PostMapping("/{postId}/comments/{commentId}/delete")
+    @PostMapping("/comments/{commentId}/delete")
     public String deleteComment(@PathVariable(name = "postId") Long postId,
                                 @PathVariable(name = "commentId") Long commentId) {
         commentService.deleteById(commentId);

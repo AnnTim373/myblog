@@ -10,4 +10,5 @@ public interface PostRepository {
 
     Optional<Post> findById(Long id);
 
+    void editLikeCount(Long postId, int i);
 }

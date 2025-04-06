@@ -42,4 +42,9 @@ public class PostServiceImpl implements PostService {
         return postRepository.findById(id).map(postMapper::toView).orElseThrow(() -> new PostException("No such post found by id defined in url"));
     }
 
+    @Override
+    public void editLikesCount(Long postId, boolean like) {
+        postRepository.editLikeCount(postId, like ? 1 : -1);
+    }
+
 }

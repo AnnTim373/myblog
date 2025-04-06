@@ -10,4 +10,6 @@ public interface PostService {
 
     PostView getById(Long id);
 
+    void editLikesCount(Long postId, boolean like);
+
 }
