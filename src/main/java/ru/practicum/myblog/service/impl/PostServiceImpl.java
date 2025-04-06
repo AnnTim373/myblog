@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.practicum.myblog.domain.Post;
 import ru.practicum.myblog.dto.PostDTO;
 import ru.practicum.myblog.dto.PostView;
+import ru.practicum.myblog.dto.page.Page;
 import ru.practicum.myblog.error.PostException;
 import ru.practicum.myblog.mapper.PostMapper;
 import ru.practicum.myblog.repository.CommentRepository;
@@ -25,6 +26,11 @@ public class PostServiceImpl implements PostService {
 
     private final PostMapper postMapper;
     private final PostValidator postValidator;
+
+    @Override
+    public Page<PostView> findAll(Page<Post> page) {
+        return postMapper.toViews(postRepository.findAll(page));
+    }
 
     @Override
     public Post save(PostDTO postDTO) {

@@ -5,10 +5,11 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import ru.practicum.myblog.domain.Comment;
 import ru.practicum.myblog.domain.Post;
+import ru.practicum.myblog.dto.page.Page;
 import ru.practicum.myblog.repository.PostRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -47,6 +48,20 @@ public class PostRepositoryImpl implements PostRepository {
                 session.createQuery("from Post where id = :id", Post.class)
                         .setParameter("id", id).uniqueResult()
         );
+    }
+
+    @Override
+    public Page<Post> findAll(Page<Post> page) {
+        Session session = sessionFactory.getCurrentSession();
+        Long total = session.createQuery("select count(p.id) from Post p", Long.class).uniqueResult();
+
+        List<Post> posts = session
+                .createQuery("from Post", Post.class)
+                .setFirstResult(page.getOffset())
+                .setMaxResults(page.getPageSize())
+                .getResultList();
+
+        return new Page<>(posts, total, page.getPageSize(), page.getPageNumber());
     }
 
 }

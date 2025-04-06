@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.practicum.myblog.domain.Post;
 import ru.practicum.myblog.dto.PostDTO;
 import ru.practicum.myblog.dto.PostView;
+import ru.practicum.myblog.dto.page.Page;
 import ru.practicum.myblog.service.PostService;
 
 @Controller
@@ -15,6 +16,19 @@ import ru.practicum.myblog.service.PostService;
 public class PostController {
 
     private final PostService postService;
+
+    @GetMapping
+    public String getPosts(Model model,
+                           @ModelAttribute Page<Post> page,
+                           @RequestParam(name = "search", required = false) String search) {
+
+        Page<PostView> postPage = postService.findAll(page);
+
+        model.addAttribute("search", search)
+                .addAttribute("page", postPage);
+        return "posts";
+    }
+
 
     @GetMapping({"/add", "/edit/{postId}"})
     public String showPostForm(@PathVariable(name = "postId", required = false) Long postId, Model model) {

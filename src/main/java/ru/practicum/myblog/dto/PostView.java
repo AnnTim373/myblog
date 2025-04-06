@@ -33,4 +33,12 @@ public class PostView {
         return Arrays.stream(this.content.split("\n")).toList();
     }
 
+    @SuppressWarnings("unused")
+    public String getTextPreview() {
+        if (this.content != null) {
+            if (this.content.length() <= 200) return this.content;
+            return this.content.substring(0, 200) + "...";
+        } else return "";
+    }
+
 }

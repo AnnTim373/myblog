@@ -7,6 +7,7 @@ import ru.practicum.myblog.domain.Post;
 import ru.practicum.myblog.domain.Tag;
 import ru.practicum.myblog.dto.PostDTO;
 import ru.practicum.myblog.dto.PostView;
+import ru.practicum.myblog.dto.page.Page;
 import ru.practicum.myblog.mapper.CommentMapper;
 import ru.practicum.myblog.mapper.PostMapper;
 
@@ -48,6 +49,12 @@ public class PostMapperImpl implements PostMapper {
                 .image(post.getImage() != null ? Base64.getEncoder().encodeToString(post.getImage().getData()) : null)
                 .comments(commentMapper.toDTOs(post.getComments()))
                 .build();
+    }
+
+    @Override
+    public Page<PostView> toViews(Page<Post> posts) {
+        List<PostView> contentView = posts.getContent().stream().map(this::toView).toList();
+        return new Page<>(contentView, posts.getTotalCount(), posts.getPageSize(), posts.getPageNumber());
     }
 
     @Override
