@@ -20,7 +20,7 @@ public class Image {
     private Post post;
 
     @Lob
-    @Column(name = "data", columnDefinition="BLOB")
+    @Column(name = "data", columnDefinition = "BLOB")
     private byte[] data;
 
 }

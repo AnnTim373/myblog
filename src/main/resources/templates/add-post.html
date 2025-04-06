@@ -26,7 +26,7 @@
         <tr>
             <td>
                 <h3>Теги</h3>
-                <textarea rows="2" style="width: 100%;" name="tags" th:text="${post.getId()==null ? '' : post.getTagsAsText()}"></textarea>
+                <textarea rows="2" placeholder="Введите тэги c # через пробел, например :'#car #bmw' " style="width: 100%;" name="tags" th:text="${post.getId()==null ? '' : post.getTagsAsText()}"></textarea>
             </td>
         </tr>
         <tr>

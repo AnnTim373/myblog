@@ -15,3 +15,18 @@ create table if not exists my_blog.image
     post_id bigint references my_blog.post(id) primary key,
     data blob not null
 );
+
+create table if not exists my_blog.tag
+(
+    tag_value varchar primary key
+);
+
+create table if not exists my_blog.post_tag
+(
+    post_id bigint not null references my_blog.post(id),
+    tag_value varchar not null references my_blog.tag(tag_value),
+    primary key (post_id, tag_value)
+);
+
+
+
