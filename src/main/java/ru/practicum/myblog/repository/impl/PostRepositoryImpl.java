@@ -56,7 +56,30 @@ public class PostRepositoryImpl implements PostRepository {
         Long total = session.createQuery("select count(p.id) from Post p", Long.class).uniqueResult();
 
         List<Post> posts = session
-                .createQuery("from Post", Post.class)
+                .createQuery("from Post p order by p.id desc", Post.class)
+                .setFirstResult(page.getOffset())
+                .setMaxResults(page.getPageSize())
+                .getResultList();
+
+        return new Page<>(posts, total, page.getPageSize(), page.getPageNumber());
+    }
+
+    @Override
+    public Page<Post> findAllByTag(Page<Post> page, String tag) {
+        Session session = sessionFactory.getCurrentSession();
+        Long total = session
+                .createQuery(
+                        "select count(distinct p.id) from Post p join p.tags t where t.value = :tag", Long.class
+                )
+                .setParameter("tag", tag)
+                .uniqueResult();
+
+        List<Post> posts = session
+                .createQuery(
+                        "select distinct p from Post p join p.tags t where t.value = :tag order by p.id desc",
+                        Post.class
+                )
+                .setParameter("tag", tag)
                 .setFirstResult(page.getOffset())
                 .setMaxResults(page.getPageSize())
                 .getResultList();

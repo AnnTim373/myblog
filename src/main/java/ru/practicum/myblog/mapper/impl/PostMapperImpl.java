@@ -65,7 +65,8 @@ public class PostMapperImpl implements PostMapper {
                 .content(post.getContent())
                 .likesCount(post.getLikesCount())
                 .tags(getTagsForDTO(post))
-                .oldImage(Base64.getEncoder().encodeToString(post.getImage().getData()))
+                .oldImage(post.getImage() != null ?
+                        Base64.getEncoder().encodeToString(post.getImage().getData()) : null)
                 .build();
     }
 
@@ -92,6 +93,7 @@ public class PostMapperImpl implements PostMapper {
     }
 
     private String getTagsForDTO(Post post) {
+        if (post.getTags() == null || post.getTags().isEmpty()) return "";
         return "#" + post.getTags().stream().map(Tag::getValue).collect(Collectors.joining(" #"));
     }
 

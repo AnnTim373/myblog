@@ -6,7 +6,18 @@
 </head>
 
 <body>
-<a href="/posts" style="float:right;">
+
+<div th:if="${error} != null" style="
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    padding: 15px;
+    margin: 20px 0;
+    border-radius: 5px;
+    font-family: Arial, sans-serif;
+" th:text="${error}"/>
+
+<a th:href="@{/posts}" style="float:right;">
     <b>НА ГЛАВНУЮ &cudarrr;</b>
 </a>
 <form method="POST" th:action="@{/posts/add}" enctype="multipart/form-data">
@@ -26,7 +37,8 @@
         <tr>
             <td>
                 <h3>Название</h3>
-                <textarea rows="2" style="width: 100%;" name="title" th:text="${post.getId()==null ? '' : post.getTitle()}"></textarea>
+                <textarea rows="2" style="width: 100%;" name="title"
+                          th:text="${post.getId()==null ? '' : post.getTitle()}"></textarea>
             </td>
         </tr>
         <tr>
@@ -47,13 +59,16 @@
         <tr>
             <td>
                 <h3>Теги</h3>
-                <textarea rows="2" placeholder="Введите тэги c # через пробел, например :'#car #bmw' " style="width: 100%;" name="tags" th:text="${post.getId()==null ? '' : post.getTags()}"></textarea>
+                <textarea rows="2" placeholder="Введите тэги c # через пробел, например :'#car #bmw' "
+                          style="width: 100%;" name="tags"
+                          th:text="${post.getId()==null ? '' : post.getTags()}"></textarea>
             </td>
         </tr>
         <tr>
             <td>
                 <h3>Текст</h3>
-                <textarea rows="30" style="width: 100%;" name="content" th:text="${post.getId()==null ? '' : post.getContent()}"></textarea>
+                <textarea rows="30" style="width: 100%;" name="content"
+                          th:text="${post.getId()==null ? '' : post.getContent()}"></textarea>
             </td>
         </tr>
         <tr>

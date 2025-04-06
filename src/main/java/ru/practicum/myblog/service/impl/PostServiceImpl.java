@@ -28,8 +28,11 @@ public class PostServiceImpl implements PostService {
     private final PostValidator postValidator;
 
     @Override
-    public Page<PostView> findAll(Page<Post> page) {
-        return postMapper.toViews(postRepository.findAll(page));
+    public Page<PostView> findAll(Page<Post> page, String tag) {
+        Page<Post> postPage;
+        if (tag == null || tag.isEmpty()) postPage = postRepository.findAll(page);
+        else postPage = postRepository.findAllByTag(page, tag);
+        return postMapper.toViews(postPage);
     }
 
     @Override

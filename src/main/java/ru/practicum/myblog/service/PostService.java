@@ -7,7 +7,7 @@ import ru.practicum.myblog.dto.page.Page;
 
 public interface PostService {
 
-    Page<PostView> findAll(Page<Post> page);
+    Page<PostView> findAll(Page<Post> page, String tag);
 
     Post save(PostDTO post);
 

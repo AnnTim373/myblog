@@ -17,4 +17,6 @@ public interface PostRepository {
 
     Page<Post> findAll(Page<Post> page);
 
+    Page<Post> findAllByTag(Page<Post> page, String tag);
+
 }

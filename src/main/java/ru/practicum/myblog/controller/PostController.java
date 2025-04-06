@@ -21,39 +21,67 @@ public class PostController {
     public String getPosts(Model model,
                            @ModelAttribute Page<Post> page,
                            @RequestParam(name = "search", required = false) String search) {
-
-        Page<PostView> postPage = postService.findAll(page);
-
-        model.addAttribute("search", search)
-                .addAttribute("page", postPage);
-        return "posts";
+        try {
+            Page<PostView> postPage = postService.findAll(page, search);
+            model.addAttribute("search", search)
+                    .addAttribute("page", postPage);
+            return "posts";
+        } catch (Exception e) {
+            model.addAttribute("search", null)
+                    .addAttribute("page", new Page<PostView>())
+                    .addAttribute("error", e.getMessage());
+            return "posts";
+        }
     }
 
 
     @GetMapping({"/add", "/edit/{postId}"})
     public String showPostForm(@PathVariable(name = "postId", required = false) Long postId, Model model) {
-        PostDTO post = postId == null ? new PostDTO() : postService.getDTOById(postId);
-        model.addAttribute("post", post);
-        return "add-post";
+        try {
+            PostDTO post = postId == null ? new PostDTO() : postService.getDTOById(postId);
+            model.addAttribute("post", post);
+            return "add-post";
+        } catch (Exception e) {
+            model.addAttribute("error", e.getMessage())
+                    .addAttribute("post", new PostDTO());
+            return "add-post";
+        }
     }
 
     @PostMapping("/add")
-    public String createPost(@ModelAttribute(name = "post") PostDTO post) {
-        Post savedPost = postService.save(post);
-        return "redirect:/posts/" + savedPost.getId();
+    public String createPost(@ModelAttribute(name = "post") PostDTO post, Model model) {
+        try {
+            Post savedPost = postService.save(post);
+            return "redirect:/posts/" + savedPost.getId();
+        } catch (Exception e) {
+            model.addAttribute("error", e.getMessage())
+                    .addAttribute("post", post);
+            return "add-post";
+        }
     }
 
     @GetMapping("/{id}")
     public String showPostDetails(@PathVariable(name = "id") Long id, Model model) {
-        PostView post = postService.getViewById(id);
-        model.addAttribute("post", post);
-        return "post";
+        try {
+            PostView post = postService.getViewById(id);
+            model.addAttribute("post", post);
+            return "post";
+        } catch (Exception e) {
+            model.addAttribute("error", e.getMessage())
+                    .addAttribute("post", new PostView());
+            return "post";
+        }
     }
 
     @PostMapping("/delete/{postId}")
-    public String deletePost(@PathVariable(name = "postId") Long postId) {
-        postService.deleteById(postId);
-        return "redirect:/posts";
+    public String deletePost(@PathVariable(name = "postId") Long postId, Model model) {
+        try {
+            postService.deleteById(postId);
+            return "redirect:/posts";
+        } catch (Exception e) {
+            model.addAttribute("error", e.getMessage());
+            return "post";
+        }
     }
 
 }
