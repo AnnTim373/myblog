@@ -9,8 +9,20 @@
 <a href="/posts" style="float:right;">
     <b>НА ГЛАВНУЮ &cudarrr;</b>
 </a>
-<form method="POST" th:action="${post.getId()==null ? '/myblog/posts/add' : '/myblog/posts/edit'+post.getId()}" enctype="multipart/form-data">
+<form method="POST" th:action="@{/posts/add}" enctype="multipart/form-data">
     <table style="width:50%;margin-left:auto;margin-right:auto;">
+        <tr style="display: none">
+            <td>
+                <h3>Идентификатор</h3>
+                <textarea name="id" th:text="${post.getId()}"></textarea>
+            </td>
+        </tr>
+        <tr style="display: none">
+            <td>
+                <h3>Количество лайков</h3>
+                <textarea name="likesCount" th:text="${post.getLikesCount()}"></textarea>
+            </td>
+        </tr>
         <tr>
             <td>
                 <h3>Название</h3>
@@ -19,14 +31,23 @@
         </tr>
         <tr>
             <td>
-                <h3>Изображение</h3>
-                <input type="file" name="image">
+                <h3 th:text="${post.getOldImage()==null ? 'Изображение' : 'Новое изображение'}"></h3>
+                <input type="file" name="image" th:src="@{'data:image/png;base64,'+${post.getOldImage()}}">
+            </td>
+        </tr>
+        <tr th:if="${post.getOldImage() != null}">
+            <td>
+                <h3>Текущее изображение</h3>
+                <p>
+                    <img height="300" th:src="@{'data:image/png;base64,'+${post.getOldImage()}}">
+                </p>
+                <textarea style="display: none" name="oldImage" th:text="${post.getOldImage()}"></textarea>
             </td>
         </tr>
         <tr>
             <td>
                 <h3>Теги</h3>
-                <textarea rows="2" placeholder="Введите тэги c # через пробел, например :'#car #bmw' " style="width: 100%;" name="tags" th:text="${post.getId()==null ? '' : post.getTagsAsText()}"></textarea>
+                <textarea rows="2" placeholder="Введите тэги c # через пробел, например :'#car #bmw' " style="width: 100%;" name="tags" th:text="${post.getId()==null ? '' : post.getTags()}"></textarea>
             </td>
         </tr>
         <tr>

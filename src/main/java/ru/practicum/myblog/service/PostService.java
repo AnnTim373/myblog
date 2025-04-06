@@ -8,7 +8,9 @@ public interface PostService {
 
     Post save(PostDTO post);
 
-    PostView getById(Long id);
+    PostView getViewById(Long id);
+
+    PostDTO getDTOById(Long id);
 
     void editLikesCount(Long postId, boolean like);
 

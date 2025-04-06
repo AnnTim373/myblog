@@ -16,9 +16,10 @@ public class PostController {
 
     private final PostService postService;
 
-    @GetMapping("/add")
-    public String showPostForm(Model model) {
-        model.addAttribute("post", new PostDTO());
+    @GetMapping({"/add", "/edit/{postId}"})
+    public String showPostForm(@PathVariable(name = "postId", required = false) Long postId, Model model) {
+        PostDTO post = postId == null ? new PostDTO() : postService.getDTOById(postId);
+        model.addAttribute("post", post);
         return "add-post";
     }
 
@@ -30,7 +31,7 @@ public class PostController {
 
     @GetMapping("/{id}")
     public String showPostDetails(@PathVariable(name = "id") Long id, Model model) {
-        PostView post = postService.getById(id);
+        PostView post = postService.getViewById(id);
         model.addAttribute("post", post);
         return "post";
     }

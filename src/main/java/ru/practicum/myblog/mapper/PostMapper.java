@@ -11,4 +11,6 @@ public interface PostMapper {
     Post fromDTO(PostDTO postDTO) throws IOException;
 
     PostView toView(Post post);
+
+    PostDTO toDTO(Post post);
 }

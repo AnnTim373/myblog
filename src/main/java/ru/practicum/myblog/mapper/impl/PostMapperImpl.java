@@ -11,7 +11,10 @@ import ru.practicum.myblog.mapper.CommentMapper;
 import ru.practicum.myblog.mapper.PostMapper;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Base64;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
@@ -47,9 +50,31 @@ public class PostMapperImpl implements PostMapper {
                 .build();
     }
 
+    @Override
+    public PostDTO toDTO(Post post) {
+        return PostDTO.builder()
+                .id(post.getId())
+                .title(post.getTitle())
+                .content(post.getContent())
+                .likesCount(post.getLikesCount())
+                .tags(getTagsForDTO(post))
+                .oldImage(Base64.getEncoder().encodeToString(post.getImage().getData()))
+                .build();
+    }
+
     private Optional<Image> getImageFromPostDTO(PostDTO postDTO, Post post) throws IOException {
-        if (postDTO.getImage() == null || postDTO.getImage().isEmpty()) return Optional.empty();
-        return Optional.of(Image.builder().post(post).data(postDTO.getImage().getBytes()).build());
+        if (postDTO.getImage() == null || postDTO.getImage().isEmpty()) {
+            if (postDTO.getOldImage() != null) {
+                return Optional.of(Image.builder()
+                        .post(post)
+                        .data(Base64.getDecoder().decode(postDTO.getOldImage()))
+                        .build());
+            } else return Optional.empty();
+        }
+        return Optional.of(Image.builder()
+                .post(post)
+                .data(postDTO.getImage().getBytes())
+                .build());
     }
 
     private List<Tag> getTagsFromDTO(PostDTO postDTO) {
@@ -57,6 +82,10 @@ public class PostMapperImpl implements PostMapper {
                 .filter(tag -> !tag.trim().isEmpty())
                 .map(tag -> new Tag(tag.trim().toLowerCase()))
                 .toList();
+    }
+
+    private String getTagsForDTO(Post post) {
+        return "#" + post.getTags().stream().map(Tag::getValue).collect(Collectors.joining(" #"));
     }
 
 }
