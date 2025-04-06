@@ -5,6 +5,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import ru.practicum.myblog.domain.Comment;
 import ru.practicum.myblog.domain.Post;
 import ru.practicum.myblog.repository.PostRepository;
 
@@ -19,8 +20,7 @@ public class PostRepositoryImpl implements PostRepository {
 
     @Override
     public Post save(Post post) {
-        sessionFactory.getCurrentSession().merge(post);
-        return post;
+        return sessionFactory.getCurrentSession().merge(post);
     }
 
     @Override
@@ -32,12 +32,21 @@ public class PostRepositoryImpl implements PostRepository {
     }
 
     @Override
-    public void editLikeCount(Long postId, int likeCountModifier) {
+    public void editLikeCount(Long id, int likeCountModifier) {
         Session session = sessionFactory.getCurrentSession();
-        Post post = session.createQuery("from Post where id = :postId", Post.class)
-                .setParameter("postId", postId).uniqueResult();
+        Post post = session.createQuery("from Post where id = :id", Post.class)
+                .setParameter("id", id).uniqueResult();
         post.setLikesCount(post.getLikesCount() + likeCountModifier);
         session.merge(post);
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        Session session = sessionFactory.getCurrentSession();
+        session.remove(
+                session.createQuery("from Post where id = :id", Post.class)
+                        .setParameter("id", id).uniqueResult()
+        );
     }
 
 }

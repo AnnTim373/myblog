@@ -53,8 +53,13 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public void editLikesCount(Long postId, boolean like) {
-        postRepository.editLikeCount(postId, like ? 1 : -1);
+    public void editLikesCount(Long id, boolean like) {
+        postRepository.editLikeCount(id, like ? 1 : -1);
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        postRepository.deleteById(id);
     }
 
 }

@@ -44,7 +44,7 @@ public class Post {
             ))
     private List<Tag> tags;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JoinColumn(name = "post_id", referencedColumnName = "id")
     private List<Comment> comments;
 

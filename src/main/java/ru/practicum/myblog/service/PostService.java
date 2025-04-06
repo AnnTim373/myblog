@@ -12,6 +12,8 @@ public interface PostService {
 
     PostDTO getDTOById(Long id);
 
-    void editLikesCount(Long postId, boolean like);
+    void editLikesCount(Long id, boolean like);
+
+    void deleteById(Long id);
 
 }

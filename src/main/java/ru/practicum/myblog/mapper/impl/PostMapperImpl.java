@@ -45,7 +45,7 @@ public class PostMapperImpl implements PostMapper {
                 .content(post.getContent())
                 .likesCount(post.getLikesCount())
                 .tags(post.getTags().stream().map(Tag::getValue).collect(Collectors.toList()))
-                .image(Base64.getEncoder().encodeToString(post.getImage().getData()))
+                .image(post.getImage() != null ? Base64.getEncoder().encodeToString(post.getImage().getData()) : null)
                 .comments(commentMapper.toDTOs(post.getComments()))
                 .build();
     }
