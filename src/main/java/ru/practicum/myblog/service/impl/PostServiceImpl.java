@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.practicum.myblog.domain.Post;
 import ru.practicum.myblog.dto.PostDTO;
+import ru.practicum.myblog.dto.PostView;
 import ru.practicum.myblog.error.PostException;
 import ru.practicum.myblog.mapper.PostMapper;
 import ru.practicum.myblog.repository.PostRepository;
@@ -34,6 +35,11 @@ public class PostServiceImpl implements PostService {
         }
         tagRepository.saveAll(post.getTags());
         return postRepository.save(post);
+    }
+
+    @Override
+    public PostView getById(Long id) {
+        return postRepository.findById(id).map(postMapper::toView).orElseThrow(() -> new PostException("No such post found by id defined in url"));
     }
 
 }

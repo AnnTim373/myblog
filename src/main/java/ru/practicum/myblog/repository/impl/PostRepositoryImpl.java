@@ -7,6 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.myblog.domain.Post;
 import ru.practicum.myblog.repository.PostRepository;
 
+import java.util.Optional;
+
 @Repository
 @RequiredArgsConstructor
 public class PostRepositoryImpl implements PostRepository {
@@ -18,6 +20,15 @@ public class PostRepositoryImpl implements PostRepository {
     public Post save(Post post) {
         sessionFactory.getCurrentSession().persist(post);
         return post;
+    }
+
+    @Override
+    @Transactional
+    public Optional<Post> findById(Long id) {
+        return sessionFactory.getCurrentSession()
+                .createQuery("from Post where id = :id", Post.class)
+                .setParameter("id", id)
+                .uniqueResultOptional();
     }
 
 }
