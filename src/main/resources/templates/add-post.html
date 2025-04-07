@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Блог</title>
+</head>
+
+<body>
+
+<div th:if="${error} != null" style="
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    padding: 15px;
+    margin: 20px 0;
+    border-radius: 5px;
+    font-family: Arial, sans-serif;
+" th:text="${error}"/>
+
+<a th:href="@{/posts}" style="float:right;">
+    <b>НА ГЛАВНУЮ &cudarrr;</b>
+</a>
+<form method="POST" th:action="@{/posts/add}" enctype="multipart/form-data">
+    <table style="width:50%;margin-left:auto;margin-right:auto;">
+        <tr style="display: none">
+            <td>
+                <h3>Идентификатор</h3>
+                <textarea name="id" th:text="${post.getId()}"></textarea>
+            </td>
+        </tr>
+        <tr style="display: none">
+            <td>
+                <h3>Количество лайков</h3>
+                <textarea name="likesCount" th:text="${post.getLikesCount()}"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <h3>Название</h3>
+                <textarea rows="2" style="width: 100%;" name="title"
+                          th:text="${post.getId()==null ? '' : post.getTitle()}"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <h3 th:text="${post.getOldImage()==null ? 'Изображение' : 'Новое изображение'}"></h3>
+                <input type="file" name="image" th:src="@{'data:image/png;base64,'+${post.getOldImage()}}">
+            </td>
+        </tr>
+        <tr th:if="${post.getOldImage() != null}">
+            <td>
+                <h3>Текущее изображение</h3>
+                <p>
+                    <img height="300" th:src="@{'data:image/png;base64,'+${post.getOldImage()}}">
+                </p>
+                <textarea style="display: none" name="oldImage" th:text="${post.getOldImage()}"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <h3>Теги</h3>
+                <textarea rows="2" placeholder="Введите тэги c # через пробел, например :'#car #bmw' "
+                          style="width: 100%;" name="tags"
+                          th:text="${post.getId()==null ? '' : post.getTags()}"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <h3>Текст</h3>
+                <textarea rows="30" style="width: 100%;" name="content"
+                          th:text="${post.getId()==null ? '' : post.getContent()}"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <button style="float:right;" th:text="${post.getId()==null ? 'Сохранить' : 'Редактировать'}"></button>
+            </td>
+        </tr>
+    </table>
+</form>
+</body>
