@@ -11,7 +11,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @Configuration
 @EnableWebMvc
 @ComponentScan(basePackages = "ru.practicum.myblog")
-@PropertySource("classpath:config/application.properties")
+@PropertySource("classpath:config/application.yml")
 public class WebConfiguration {
 
     @Bean

@@ -1,6 +1,5 @@
 plugins {
     id("java")
-    id("war")
 }
 
 group = "ru.practicum"
@@ -18,8 +17,11 @@ repositories {
 
 dependencies {
     // Spring
-    implementation("org.springframework:spring-webmvc:6.2.1")
-    implementation("org.springframework:spring-orm:6.2.1")
+    implementation platform("org.springframework.boot:spring-boot-starter-parent:3.4.4")
+    implementation("org.springframework.boot:spring-boot-starter")
+    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-jdbc")
+    implementation("org.springframework:spring-orm")
 
     // Lombok
     compileOnly("org.projectlombok:lombok:1.18.38")
@@ -44,13 +46,14 @@ dependencies {
     testImplementation("org.hamcrest:hamcrest:3.0")
     testImplementation("org.assertj:assertj-core:3.27.3")
 
-    testImplementation("org.springframework:spring-test:6.2.1")
+    // Spring Boot Test
+    testImplementation("org.springframework.boot:spring-boot-test")
 }
 
 tasks.test {
     useJUnitPlatform()
 }
 
-war {
-    archiveFileName.set("myblogApp.war")
+jar {
+    archiveFileName.set("myblogApp.jar")
 }
