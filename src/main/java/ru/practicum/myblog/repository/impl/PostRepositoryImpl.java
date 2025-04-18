@@ -87,4 +87,12 @@ public class PostRepositoryImpl implements PostRepository {
         return new Page<>(posts, total, page.getPageSize(), page.getPageNumber());
     }
 
+    public Optional<Post> findByTitle(String title) {
+        return Optional.ofNullable(sessionFactory.getCurrentSession().createQuery(
+                        "select p from Post p where p.title = :title",
+                        Post.class
+                )
+                .setParameter("title", title).uniqueResult());
+    }
+
 }

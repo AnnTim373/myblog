@@ -4,14 +4,13 @@ import org.h2.Driver;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
-import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
-import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
@@ -32,6 +31,7 @@ public class DataSourceConfiguration {
     private String hibernateDialect;
 
     @Bean
+    @Primary
     public DataSource dataSource(
     ) {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
@@ -44,6 +44,7 @@ public class DataSourceConfiguration {
     }
 
     @Bean
+    @Primary
     public LocalSessionFactoryBean sessionFactory() {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource());
@@ -51,14 +52,6 @@ public class DataSourceConfiguration {
         sessionFactory.setHibernateProperties(hibernateProperties());
 
         return sessionFactory;
-    }
-
-    @Bean
-    public PlatformTransactionManager hibernateTransactionManager() {
-        HibernateTransactionManager transactionManager
-                = new HibernateTransactionManager();
-        transactionManager.setSessionFactory(sessionFactory().getObject());
-        return transactionManager;
     }
 
     private Properties hibernateProperties() {

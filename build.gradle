@@ -1,0 +1,60 @@
+plugins {
+    id("java")
+    id("org.springframework.boot") version "3.4.4"
+}
+
+group = "ru.practicum"
+version = "1.0-SNAPSHOT"
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+}
+
+repositories {
+    mavenCentral()
+}
+
+
+dependencies {
+    // Spring
+    implementation platform("org.springframework.boot:spring-boot-starter-parent:3.4.4")
+    implementation("org.springframework.boot:spring-boot-starter")
+    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-jdbc")
+    implementation("org.springframework:spring-orm")
+
+    // Lombok
+    compileOnly("org.projectlombok:lombok:1.18.38")
+    annotationProcessor("org.projectlombok:lombok:1.18.38")
+
+    // Data
+    implementation("com.h2database:h2:2.2.224")
+    implementation("org.hibernate.orm:hibernate-core:6.6.12.Final")
+
+    // Web
+    implementation("jakarta.servlet:jakarta.servlet-api:6.0.0")
+    implementation("org.thymeleaf:thymeleaf:3.1.2.RELEASE")
+    implementation("org.thymeleaf:thymeleaf-spring6:3.1.2.RELEASE")
+
+    // JUnit 5
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.12.1")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.12.1")
+
+    // Mockito + Hamcrest + AssertJ
+    testImplementation("org.mockito:mockito-core:5.17.0")
+    testImplementation("org.mockito:mockito-junit-jupiter:5.17.0")
+    testImplementation("org.hamcrest:hamcrest:3.0")
+    testImplementation("org.assertj:assertj-core:3.27.3")
+
+    // Spring Boot Test
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
+}
+
+tasks.test {
+    useJUnitPlatform()
+}
+
+jar {
+    archiveFileName.set("myblogApp.jar")
+}
