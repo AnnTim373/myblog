@@ -18,8 +18,8 @@ public class CommentRepositoryImpl implements CommentRepository {
     private final SessionFactory sessionFactory;
 
     @Override
-    public void save(Comment comment) {
-        sessionFactory.getCurrentSession().merge(comment);
+    public Comment save(Comment comment) {
+        return sessionFactory.getCurrentSession().merge(comment);
     }
 
     @Override

@@ -19,4 +19,6 @@ public interface PostRepository {
 
     Page<Post> findAllByTag(Page<Post> page, String tag);
 
+    Optional<Post> findByTitle(String title);
+
 }

@@ -15,7 +15,7 @@
     margin: 20px 0;
     border-radius: 5px;
     font-family: Arial, sans-serif;
-" th:text="${error}"/>
+" th:text="${error}"></div>
 
 <form method="GET" th:action="@{/posts/add}">
     <button style="float:right;">ДОБАВИТЬ ПОСТ</button>
@@ -40,9 +40,11 @@
                     </select>
                 </p>
                 <p>
-                    <button th:if="${page.hasPrevious()}" name="pageNumber" th:value="${page.getPageNumber()-1}">&lt;</button>
+                    <button th:if="${page.hasPrevious()}" name="pageNumber" th:value="${page.getPageNumber()-1}">&lt;
+                    </button>
                     <span th:text="${'Страница: '+page.getPageNumber()}"></span>
-                    <button th:if="${page.hasNext()}" name="pageNumber" th:value="${page.getPageNumber()+1}">&gt;</button>
+                    <button th:if="${page.hasNext()}" name="pageNumber" th:value="${page.getPageNumber()+1}">&gt;
+                    </button>
                 </p>
             </form>
         </td>
@@ -52,11 +54,9 @@
             <a style="text-decoration: none; color: inherit" th:href="@{/posts/{postId}(postId=${post.getId()})}">
                 <h2 th:text="${post.getTitle()}"></h2>
             </a>
-            <p>
-                <a th:if="${post.getImage()} != null">
-                        <img height="300"
-                             th:src="@{'data:image/png;base64,'+${post.getImage()}}">
-                </a>
+            <p th:if="${post.getImage()} != null">
+                <img height="300"
+                     th:src="@{'data:image/png;base64,'+${post.getImage()}}" alt="">
             </p>
             <p th:text="${post.getTextPreview()}"></p>
             <p>
